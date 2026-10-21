@@ -120,11 +120,20 @@ capture_device() {
         #     the naming, plain -u does NOT achieve this — confirmed by testing.)
         # -n: don't send a Close frame on EOF, as extra insurance.
         # -v: verbose, so close reasons/handshake errors are captured for diagnosis.
-        # -t: text mode. Each line from the device gets an ISO-8601 timestamp prepended.
+        # -b: binary mode, so the payload passes through byte-for-byte and the
+        #     firmware's own newline framing becomes our line framing: one log
+        #     record per line, each with its own ISO-8601 timestamp. Do NOT use
+        #     -t here — text mode enforces one-message-per-line by rewriting
+        #     newlines *inside* a message to spaces, and the device batches many
+        #     records per message under load (~12 observed), welding them onto a
+        #     single line. -t also injects a spurious newline at every message
+        #     boundary, splitting records that span two messages. Verified by
+        #     sending one message containing "AAA\nBBB\nCCC": -t yields
+        #     "AAA BBB CCC\n", -b yields the bytes unchanged.
         # websocat's stderr is timestamped too and merged into the same .log,
         # tagged [websocat], so errors sit in chronological order next to the
         # device output that preceded them.
-        if websocat -t -v -U -n "${ping_args[@]}" "$url" < /dev/null \
+        if websocat -b -v -U -n "${ping_args[@]}" "$url" < /dev/null \
                 2> >(timestamp_stream '[websocat]' >> "$logfile") \
             | timestamp_stream >> "$logfile"; then
             log_event "$name" "$logfile" "connection closed cleanly, reconnecting in ${RECONNECT_DELAY}s..."
