@@ -1,4 +1,4 @@
-# ESP32 AirPlay Log Capture
+# airplay-esp32-logmate
 
 Continuously captures websocket log streams from multiple ESP32-AirPlay
 devices into per-device timestamped log files, with automatic reconnect.

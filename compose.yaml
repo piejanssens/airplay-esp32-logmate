@@ -1,7 +1,7 @@
 services:
-  esp32-log-capture:
+  airplay-esp32-logmate:
     build: .
-    container_name: esp32-log-capture
+    container_name: airplay-esp32-logmate
     restart: unless-stopped
     network_mode: bridge  # switch to "host" if your devices are only reachable on the LAN
                           # interface and container bridge networking can't route to them
