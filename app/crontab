@@ -1,0 +1,7 @@
+# Output goes to the container's stdout (PID 1 is capture_logs.sh), so any
+# logrotate errors surface in `docker logs` instead of a file nobody checks.
+# logrotate is silent on success, so this stays quiet unless something breaks.
+# No --state: rotation here is purely size-based, so the state file never
+# affects a decision. Re-add it (on a path under /app/logs so it persists)
+# if a time-based directive like daily/weekly/maxage is ever added.
+*/5 * * * * /usr/sbin/logrotate /app/logrotate.conf > /proc/1/fd/1 2>&1

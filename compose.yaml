@@ -1,0 +1,13 @@
+services:
+  esp32-log-capture:
+    build: .
+    container_name: esp32-log-capture
+    restart: unless-stopped
+    network_mode: bridge  # switch to "host" if your devices are only reachable on the LAN
+                          # interface and container bridge networking can't route to them
+    volumes:
+      - ./config.yaml:/app/config.yaml:ro
+      - ./logs:/app/logs
+    environment:
+      - TZ=Europe/Brussels
+      - RECONNECT_DELAY=5

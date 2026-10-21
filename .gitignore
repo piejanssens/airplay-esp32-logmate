@@ -1,0 +1,6 @@
+# Captured device logs — runtime data, can reach hundreds of MB.
+/logs/
+
+# Local device list: contains your own hostnames/IPs.
+# Copy config-example.yaml to config.yaml and edit that instead.
+/config.yaml

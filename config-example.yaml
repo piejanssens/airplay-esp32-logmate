@@ -1,0 +1,30 @@
+# Example configuration — copy to config.yaml and edit:
+#
+#   cp config-example.yaml config.yaml
+#
+# config.yaml is git-ignored, so your device list stays local.
+#
+#   name     - required, used for the log filename (logs/<name>.log) and the
+#              console prefix
+#   url      - required, full ws:// URL for that device's log stream
+#   enabled  - optional (default true), set false to park a device without
+#              deleting its entry
+#   logfile  - optional (default <name>.log), custom filename inside logs/.
+#              Keep the .log extension or logrotate will not rotate it.
+
+devices:
+  - name: living-room
+    url: ws://192.168.1.21/ws/logs
+
+  - name: kitchen
+    url: ws://192.168.1.22/ws/logs
+
+  # Parked: kept here for reference, not captured.
+  - name: bedroom
+    url: ws://192.168.1.23/ws/logs
+    enabled: false
+
+  # Writes to logs/office-esp32.log instead of logs/office.log
+  - name: office
+    url: ws://192.168.1.24/ws/logs
+    logfile: office-esp32.log
